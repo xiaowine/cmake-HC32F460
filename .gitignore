@@ -1,0 +1,11 @@
+build/
+cmake-build-*/
+CMakeUserPresets.json
+.cache/
+.idea/
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.d
