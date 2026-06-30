@@ -99,7 +99,7 @@ jobs:
         run: cmake --build "build/${HC32_CI_PART}-${{ matrix.build_type }}" --parallel
 
       - name: Upload firmware
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: firmware-${{ env.HC32_CI_PART }}-${{ matrix.build_type }}
           path: build/${{ env.HC32_CI_PART }}-${{ matrix.build_type }}/firmware/*
@@ -142,7 +142,7 @@ jobs:
 
       - name: Upload firmware
         if: inputs.upload_artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: firmware-${{ inputs.part }}-${{ inputs.build_type }}-${{ inputs.float_abi }}
           path: build/${{ inputs.part }}-${{ inputs.build_type }}-${{ inputs.float_abi }}/firmware/*
@@ -198,7 +198,7 @@ jobs:
 
       - name: Upload firmware
         if: inputs.upload_artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: firmware-${{ matrix.part }}-${{ inputs.build_type }}-${{ inputs.float_abi }}
           path: build/${{ matrix.part }}-${{ inputs.build_type }}-${{ inputs.float_abi }}/firmware/*
