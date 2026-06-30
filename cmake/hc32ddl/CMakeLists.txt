@@ -6,7 +6,7 @@ enable_language(C ASM)
 # HC32 DDL/CMSIS 需要的全局宏定义
 set(HC32_Defines_Syms
         HC32F460
-        HC32F460KEUA
+        ${HC32_PART}
         USE_DDL_DRIVER
         $<$<CONFIG:Debug>:__DEBUG>
 )
@@ -15,15 +15,21 @@ set(HC32_Defines_Syms
 set(HC32_Include_Dirs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/HC32F460_DDL_Driver/Inc
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Device/HDSC/HC32F460KEUA/Include
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Device/HDSC/HC32F460/Include
         ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Include
 )
 
-# 应用入口源码和启动文件
+# 自动收集用户应用源码；CONFIGURE_DEPENDS 会让 Ninja 构建时检查新增/删除的 .c 文件。
+file(GLOB_RECURSE HC32_APPLICATION_SOURCES CONFIGURE_DEPENDS
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/*.c
+)
+# system 文件由驱动对象库编译，避免被主目标重复编译。
+list(FILTER HC32_APPLICATION_SOURCES EXCLUDE REGEX ".*/system_hc32f460\\.c$")
+
+# 用户应用源码和启动文件
 set(HC32_Application_Src
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/main.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/syscalls.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../Platform/startup_hc32f460keua.S
+        ${HC32_APPLICATION_SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../Platform/startup_hc32f460.S
 )
 
 # 收集 DDL 驱动源码，新增 DDL .c 文件时会自动参与构建
@@ -35,7 +41,7 @@ list(FILTER HC32_DDL_DRIVER_SOURCES EXCLUDE REGEX ".*/hc32_ll_usb\\.c$")
 
 # 系统初始化文件和 DDL 驱动源码
 set(HC32_Drivers_Src
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/system_hc32f460keua.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/system_hc32f460.c
         ${HC32_DDL_DRIVER_SOURCES}
 )
 

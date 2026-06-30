@@ -6,44 +6,454 @@
       "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
-      "cacheVariables": {}
+      "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake"
     },
     {
-      "name": "Debug",
-      "inherits": "default",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
-    },
-    {
-      "name": "Release",
-      "inherits": "default",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    },
-    {
-      "name": "DebugSoftFloat",
+      "name": "HC32F460JCTA-Debug",
       "inherits": "default",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "HC32_FLOAT_ABI": "soft"
+        "HC32_PART": "HC32F460JCTA"
+      }
+    },
+    {
+      "name": "HC32F460JCTA-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460JCTA"
+      }
+    },
+    {
+      "name": "HC32F460JCTA-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460JCTA"
+      }
+    },
+    {
+      "name": "HC32F460JCTA-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460JCTA"
+      }
+    },
+    {
+      "name": "HC32F460JETA-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460JETA"
+      }
+    },
+    {
+      "name": "HC32F460JETA-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460JETA"
+      }
+    },
+    {
+      "name": "HC32F460JETA-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460JETA"
+      }
+    },
+    {
+      "name": "HC32F460JETA-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460JETA"
+      }
+    },
+    {
+      "name": "HC32F460JEUA-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460JEUA"
+      }
+    },
+    {
+      "name": "HC32F460JEUA-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460JEUA"
+      }
+    },
+    {
+      "name": "HC32F460JEUA-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460JEUA"
+      }
+    },
+    {
+      "name": "HC32F460JEUA-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460JEUA"
+      }
+    },
+    {
+      "name": "HC32F460KCTA-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460KCTA"
+      }
+    },
+    {
+      "name": "HC32F460KCTA-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460KCTA"
+      }
+    },
+    {
+      "name": "HC32F460KCTA-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460KCTA"
+      }
+    },
+    {
+      "name": "HC32F460KCTA-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460KCTA"
+      }
+    },
+    {
+      "name": "HC32F460KETA-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460KETA"
+      }
+    },
+    {
+      "name": "HC32F460KETA-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460KETA"
+      }
+    },
+    {
+      "name": "HC32F460KETA-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460KETA"
+      }
+    },
+    {
+      "name": "HC32F460KETA-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460KETA"
+      }
+    },
+    {
+      "name": "HC32F460KEUA-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460KEUA"
+      }
+    },
+    {
+      "name": "HC32F460KEUA-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460KEUA"
+      }
+    },
+    {
+      "name": "HC32F460KEUA-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460KEUA"
+      }
+    },
+    {
+      "name": "HC32F460KEUA-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460KEUA"
+      }
+    },
+    {
+      "name": "HC32F460PCTB-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460PCTB"
+      }
+    },
+    {
+      "name": "HC32F460PCTB-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460PCTB"
+      }
+    },
+    {
+      "name": "HC32F460PCTB-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460PCTB"
+      }
+    },
+    {
+      "name": "HC32F460PCTB-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460PCTB"
+      }
+    },
+    {
+      "name": "HC32F460PEHB-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460PEHB"
+      }
+    },
+    {
+      "name": "HC32F460PEHB-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460PEHB"
+      }
+    },
+    {
+      "name": "HC32F460PEHB-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460PEHB"
+      }
+    },
+    {
+      "name": "HC32F460PEHB-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460PEHB"
+      }
+    },
+    {
+      "name": "HC32F460PETB-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_PART": "HC32F460PETB"
+      }
+    },
+    {
+      "name": "HC32F460PETB-Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HC32_PART": "HC32F460PETB"
+      }
+    },
+    {
+      "name": "HC32F460PETB-RelWithDebInfo",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "HC32_PART": "HC32F460PETB"
+      }
+    },
+    {
+      "name": "HC32F460PETB-MinSizeRel",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "HC32_PART": "HC32F460PETB"
+      }
+    },
+    {
+      "name": "HC32F460KEUA-SoftFloat-Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "HC32_FLOAT_ABI": "soft",
+        "HC32_PART": "HC32F460KEUA"
       }
     }
   ],
   "buildPresets": [
     {
-      "name": "Debug",
-      "configurePreset": "Debug"
+      "name": "HC32F460JCTA-Debug",
+      "configurePreset": "HC32F460JCTA-Debug"
     },
     {
-      "name": "Release",
-      "configurePreset": "Release"
+      "name": "HC32F460JCTA-Release",
+      "configurePreset": "HC32F460JCTA-Release"
     },
     {
-      "name": "DebugSoftFloat",
-      "configurePreset": "DebugSoftFloat"
+      "name": "HC32F460JCTA-RelWithDebInfo",
+      "configurePreset": "HC32F460JCTA-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460JCTA-MinSizeRel",
+      "configurePreset": "HC32F460JCTA-MinSizeRel"
+    },
+    {
+      "name": "HC32F460JETA-Debug",
+      "configurePreset": "HC32F460JETA-Debug"
+    },
+    {
+      "name": "HC32F460JETA-Release",
+      "configurePreset": "HC32F460JETA-Release"
+    },
+    {
+      "name": "HC32F460JETA-RelWithDebInfo",
+      "configurePreset": "HC32F460JETA-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460JETA-MinSizeRel",
+      "configurePreset": "HC32F460JETA-MinSizeRel"
+    },
+    {
+      "name": "HC32F460JEUA-Debug",
+      "configurePreset": "HC32F460JEUA-Debug"
+    },
+    {
+      "name": "HC32F460JEUA-Release",
+      "configurePreset": "HC32F460JEUA-Release"
+    },
+    {
+      "name": "HC32F460JEUA-RelWithDebInfo",
+      "configurePreset": "HC32F460JEUA-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460JEUA-MinSizeRel",
+      "configurePreset": "HC32F460JEUA-MinSizeRel"
+    },
+    {
+      "name": "HC32F460KCTA-Debug",
+      "configurePreset": "HC32F460KCTA-Debug"
+    },
+    {
+      "name": "HC32F460KCTA-Release",
+      "configurePreset": "HC32F460KCTA-Release"
+    },
+    {
+      "name": "HC32F460KCTA-RelWithDebInfo",
+      "configurePreset": "HC32F460KCTA-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460KCTA-MinSizeRel",
+      "configurePreset": "HC32F460KCTA-MinSizeRel"
+    },
+    {
+      "name": "HC32F460KETA-Debug",
+      "configurePreset": "HC32F460KETA-Debug"
+    },
+    {
+      "name": "HC32F460KETA-Release",
+      "configurePreset": "HC32F460KETA-Release"
+    },
+    {
+      "name": "HC32F460KETA-RelWithDebInfo",
+      "configurePreset": "HC32F460KETA-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460KETA-MinSizeRel",
+      "configurePreset": "HC32F460KETA-MinSizeRel"
+    },
+    {
+      "name": "HC32F460KEUA-Debug",
+      "configurePreset": "HC32F460KEUA-Debug"
+    },
+    {
+      "name": "HC32F460KEUA-Release",
+      "configurePreset": "HC32F460KEUA-Release"
+    },
+    {
+      "name": "HC32F460KEUA-RelWithDebInfo",
+      "configurePreset": "HC32F460KEUA-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460KEUA-MinSizeRel",
+      "configurePreset": "HC32F460KEUA-MinSizeRel"
+    },
+    {
+      "name": "HC32F460PCTB-Debug",
+      "configurePreset": "HC32F460PCTB-Debug"
+    },
+    {
+      "name": "HC32F460PCTB-Release",
+      "configurePreset": "HC32F460PCTB-Release"
+    },
+    {
+      "name": "HC32F460PCTB-RelWithDebInfo",
+      "configurePreset": "HC32F460PCTB-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460PCTB-MinSizeRel",
+      "configurePreset": "HC32F460PCTB-MinSizeRel"
+    },
+    {
+      "name": "HC32F460PEHB-Debug",
+      "configurePreset": "HC32F460PEHB-Debug"
+    },
+    {
+      "name": "HC32F460PEHB-Release",
+      "configurePreset": "HC32F460PEHB-Release"
+    },
+    {
+      "name": "HC32F460PEHB-RelWithDebInfo",
+      "configurePreset": "HC32F460PEHB-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460PEHB-MinSizeRel",
+      "configurePreset": "HC32F460PEHB-MinSizeRel"
+    },
+    {
+      "name": "HC32F460PETB-Debug",
+      "configurePreset": "HC32F460PETB-Debug"
+    },
+    {
+      "name": "HC32F460PETB-Release",
+      "configurePreset": "HC32F460PETB-Release"
+    },
+    {
+      "name": "HC32F460PETB-RelWithDebInfo",
+      "configurePreset": "HC32F460PETB-RelWithDebInfo"
+    },
+    {
+      "name": "HC32F460PETB-MinSizeRel",
+      "configurePreset": "HC32F460PETB-MinSizeRel"
+    },
+    {
+      "name": "HC32F460KEUA-SoftFloat-Debug",
+      "configurePreset": "HC32F460KEUA-SoftFloat-Debug"
     }
   ]
 }

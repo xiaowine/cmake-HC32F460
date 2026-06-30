@@ -1,6 +1,6 @@
 /**
  *******************************************************************************
- * @file  system_hc32f460keua.h
+ * @file  system_hc32f460.h
  * @brief This file contains all the functions prototypes of the HC32 System.
  @verbatim
    Change Logs:
@@ -17,8 +17,8 @@
  *
  *******************************************************************************
  */
-#ifndef __SYSTEM_HC32F460KEUA_H__
-#define __SYSTEM_HC32F460KEUA_H__
+#ifndef __SYSTEM_HC32F460_H__
+#define __SYSTEM_HC32F460_H__
 
 /* C binding of definitions if building with C++ compiler */
 #ifdef __cplusplus
@@ -127,7 +127,7 @@ extern void SystemCoreClockUpdate(void);  /*!< Update SystemCoreClock variable *
 }
 #endif
 
-#endif /* __SYSTEM_HC32F460KEUA_H__ */
+#endif /* __SYSTEM_HC32F460_H__ */
 
 /*******************************************************************************
  * EOF (not truncated)

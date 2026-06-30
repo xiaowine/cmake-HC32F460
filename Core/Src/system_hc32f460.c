@@ -1,6 +1,6 @@
 /**
  *******************************************************************************
- * @file  system_hc32f460keua.c
+ * @file  system_hc32f460.c
  * @brief This file provides two functions and two global variables to be called
  *        from user application.
  @verbatim
@@ -22,8 +22,8 @@
 /*******************************************************************************
  * Include files
  ******************************************************************************/
-#include "system_hc32f460keua.h"
-#include "hc32f460keua.h"
+#include "system_hc32f460.h"
+#include "hc32f4xx.h"
 
 /**
  * @addtogroup CMSIS

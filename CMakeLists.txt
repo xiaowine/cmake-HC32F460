@@ -12,38 +12,79 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
         CACHE FILEPATH "ARM GCC toolchain file")
 endif()
 
-# 未显式指定构建类型时，默认使用 Debug
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
+# Ninja 是单配置生成器，编译类型由 CMAKE_BUILD_TYPE 决定。
+# 未显式指定时默认使用 Debug；CLion 中推荐通过 CMake preset 切换编译类型。
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
+endif()
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS Debug Release RelWithDebInfo MinSizeRel)
+
+# HC32F460 系列支持的具体型号。头文件会按型号切换，避免封装/GPIO 差异被误用。
+set(HC32_SUPPORTED_PARTS
+    HC32F460JCTA
+    HC32F460JETA
+    HC32F460JEUA
+    HC32F460KCTA
+    HC32F460KETA
+    HC32F460KEUA
+    HC32F460PCTB
+    HC32F460PEHB
+    HC32F460PETB
+)
+set(HC32_PART "HC32F460KEUA" CACHE STRING "Concrete HC32F460 part number")
+set_property(CACHE HC32_PART PROPERTY STRINGS ${HC32_SUPPORTED_PARTS})
+string(TOUPPER "${HC32_PART}" HC32_PART)
+set(HC32_PART "${HC32_PART}" CACHE STRING "Concrete HC32F460 part number" FORCE)
+
+if(NOT HC32_PART IN_LIST HC32_SUPPORTED_PARTS)
+    message(FATAL_ERROR "Unsupported HC32_PART=${HC32_PART}. Supported parts: ${HC32_SUPPORTED_PARTS}")
 endif()
 
-# 工程名，同时作为最终固件文件名前缀
-set(CMAKE_PROJECT_NAME HC32F460KEUA)
+# xC 型号为 256KB Flash，其余当前支持型号为 512KB Flash。
+set(HC32_256K_FLASH_PARTS
+    HC32F460JCTA
+    HC32F460KCTA
+    HC32F460PCTB
+)
+if(HC32_PART IN_LIST HC32_256K_FLASH_PARTS)
+    set(HC32_FLASH_SUFFIX xC)
+else()
+    set(HC32_FLASH_SUFFIX xE)
+endif()
+
+# 工程名使用系列名；固件输出名使用具体型号，方便多型号构建时区分产物。
+set(CMAKE_PROJECT_NAME HC32F460)
+set(HC32_FIRMWARE_NAME "${HC32_PART}")
 
 # 导出 compile_commands.json，方便 clangd/IDE 做代码索引
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-# 初始化 CMake 工程
-project(${CMAKE_PROJECT_NAME})
-message("Build type: " ${CMAKE_BUILD_TYPE})
+# 初始化 CMake 工程；模板只启用 C 和汇编，避免 CI/IDE 额外探测 C++ 工具链。
+project(${CMAKE_PROJECT_NAME} C ASM)
+message("-- Build type: " ${CMAKE_BUILD_TYPE})
 
-# 启用 C 和汇编语言；启动文件需要 ASM 支持
-enable_language(C ASM)
-
-# 默认链接脚本。可通过 -DHC32_LINKER_SCRIPT=... 覆盖
-set(HC32_LINKER_SCRIPT
-    "${CMAKE_SOURCE_DIR}/Platform/HC32F460xE.ld"
-    CACHE FILEPATH "HC32F460 linker script")
+# 默认按 HC32_PART 选择链接脚本；HC32_LINKER_SCRIPT 非空时作为手动覆盖。
+set(HC32_DEFAULT_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/Platform/HC32F460${HC32_FLASH_SUFFIX}.ld")
+set(HC32_LINKER_SCRIPT "" CACHE FILEPATH "Optional linker script override; empty selects by HC32_PART")
+if(HC32_LINKER_SCRIPT STREQUAL "")
+    set(HC32_LINKER_SCRIPT_SELECTED "${HC32_DEFAULT_LINKER_SCRIPT}")
+else()
+    set(HC32_LINKER_SCRIPT_SELECTED "${HC32_LINKER_SCRIPT}")
+endif()
 
 # 将链接脚本转换成绝对路径，避免 Ninja 从构建目录执行时找不到文件
-if(IS_ABSOLUTE "${HC32_LINKER_SCRIPT}")
-    set(HC32_LINKER_SCRIPT_ABS "${HC32_LINKER_SCRIPT}")
+if(IS_ABSOLUTE "${HC32_LINKER_SCRIPT_SELECTED}")
+    set(HC32_LINKER_SCRIPT_ABS "${HC32_LINKER_SCRIPT_SELECTED}")
 else()
-    cmake_path(ABSOLUTE_PATH HC32_LINKER_SCRIPT
+    cmake_path(ABSOLUTE_PATH HC32_LINKER_SCRIPT_SELECTED
         BASE_DIRECTORY "${CMAKE_SOURCE_DIR}"
         NORMALIZE
         OUTPUT_VARIABLE HC32_LINKER_SCRIPT_ABS)
 endif()
+
+set(HC32_SVD_FILE "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/HDSC/HC32F460/SVD/${HC32_PART}.svd")
+message(STATUS "HC32 part: ${HC32_PART}")
+message(STATUS "HC32 linker script: ${HC32_LINKER_SCRIPT_ABS}")
 
 # 浮点 ABI 选择：HC32F460 为 Cortex-M4F，默认使用硬浮点
 set(HC32_FLOAT_ABI "hard" CACHE STRING "Floating-point ABI: soft, softfp, or hard")
@@ -82,7 +123,7 @@ target_link_options(hc32_build_options INTERFACE
     -Wl,--gc-sections
     -Wl,--print-memory-usage
     -Wl,--no-warn-rwx-segments
-    -Wl,-Map=${CMAKE_BINARY_DIR}/firmware/${CMAKE_PROJECT_NAME}.map
+    -Wl,-Map=${CMAKE_BINARY_DIR}/firmware/${HC32_FIRMWARE_NAME}.map
 )
 
 # 创建最终 ELF 目标
@@ -126,13 +167,14 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 # 统一固件输出目录，并声明链接脚本变化会触发重新链接
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
     SUFFIX ".elf"
+    OUTPUT_NAME "${HC32_FIRMWARE_NAME}"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/firmware"
     LINK_DEPENDS "${HC32_LINKER_SCRIPT_ABS}"
-    ADDITIONAL_CLEAN_FILES "${CMAKE_BINARY_DIR}/firmware/${CMAKE_PROJECT_NAME}.map"
+    ADDITIONAL_CLEAN_FILES "${CMAKE_BINARY_DIR}/firmware/${HC32_FIRMWARE_NAME}.map"
 )
 
-set(HC32_HEX_FILE "${CMAKE_BINARY_DIR}/firmware/${CMAKE_PROJECT_NAME}.hex")
-set(HC32_BIN_FILE "${CMAKE_BINARY_DIR}/firmware/${CMAKE_PROJECT_NAME}.bin")
+set(HC32_HEX_FILE "${CMAKE_BINARY_DIR}/firmware/${HC32_FIRMWARE_NAME}.hex")
+set(HC32_BIN_FILE "${CMAKE_BINARY_DIR}/firmware/${HC32_FIRMWARE_NAME}.bin")
 
 # ELF 链接完成后自动生成 HEX/BIN，并打印 size 信息
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
@@ -147,11 +189,13 @@ add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
 # 如果系统安装了 pyOCD，则自动提供 flash-pyocd 烧录目标
 find_program(PYOCD_EXECUTABLE NAMES pyocd pyocd.exe)
 if(PYOCD_EXECUTABLE)
+    string(TOLOWER "hc32f460${HC32_FLASH_SUFFIX}" HC32_DEFAULT_PYOCD_TARGET)
+    set(HC32_PYOCD_TARGET "${HC32_DEFAULT_PYOCD_TARGET}" CACHE STRING "pyOCD target name")
     add_custom_target(flash-pyocd
-        COMMAND ${PYOCD_EXECUTABLE} flash -t hc32f460xe $<TARGET_FILE:${CMAKE_PROJECT_NAME}>
+        COMMAND ${PYOCD_EXECUTABLE} flash -t ${HC32_PYOCD_TARGET} $<TARGET_FILE:${CMAKE_PROJECT_NAME}>
         DEPENDS ${CMAKE_PROJECT_NAME}
         USES_TERMINAL
-        COMMENT "Flashing ${CMAKE_PROJECT_NAME} with pyOCD"
+        COMMENT "Flashing ${HC32_FIRMWARE_NAME} with pyOCD"
         VERBATIM
     )
 endif()

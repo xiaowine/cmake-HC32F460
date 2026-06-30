@@ -1,7 +1,7 @@
 /**
  *******************************************************************************
  * @file  hc32f4xx_conf.h
- * @brief DDL module selection for the HC32F460KEUA CMake template.
+ * @brief DDL module selection for the HC32F460 CMake template.
  *******************************************************************************
  */
 #ifndef __HC32F4XX_CONF_H__
@@ -72,4 +72,3 @@ extern "C" {
 #endif
 
 #endif /* __HC32F4XX_CONF_H__ */
-
